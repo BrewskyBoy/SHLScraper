@@ -27,10 +27,27 @@ namespace SHL
         {
             var url = $"http://simulationhockey.com/games/smjhl/S49/Season/SMJHL-{gameNumber}.html";
             var scraper = new GameIndexScraper();
-            scraper.Start();
-            var goals = scraper.GetGoals();
-            var goalsString = String.Join("\n", goals.ToArray());
-            await ReplyAsync(goalsString);
+            var goals = scraper.GetGoals("49", "shl", gameNumber);
+            var boxscore = scraper.GetBoxScore("49", "shl", gameNumber);
+
+            var goalsString = string.Empty;
+            goalsString += "**1st Period:**";
+            goalsString += String.Join("\n", goals.Where(x => x.Period == 1).Select(x => x.Info));
+            goalsString += "\n**2nd Period:**";
+            goalsString += String.Join("\n", goals.Where(x => x.Period == 2).Select(x => x.Info));
+            goalsString += "\n**3rd Period:**";
+            goalsString += String.Join("\n", goals.Where(x => x.Period == 3).Select(x => x.Info));
+            if (goals.Any(x => x.Period == 4))
+            {
+                goalsString += "\n**OT Period:**";
+                goalsString += String.Join("\n", goals.Where(x => x.Period == 4).Select(x => x.Info));
+            }
+            if (goals.Any(x => x.Period == 5))
+            {
+                goalsString += "\n**Shootout:**";
+                goalsString += String.Join("\n", goals.Where(x => x.Period == 5).Select(x => x.Info));
+            }
+            await ReplyAsync($"{boxscore}\n\n{goalsString}");
         }
     }
 
