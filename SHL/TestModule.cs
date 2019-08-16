@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 
@@ -23,31 +24,36 @@ namespace SHL
     public class SHLModule : ModuleBase<SocketCommandContext>
     {
         [Command("gameindex")]
-        public async Task GameIndexAsync(int gameNumber)
+        public async Task GameIndexAsync(string league, int gameNumber)
         {
-            var url = $"http://simulationhockey.com/games/smjhl/S49/Season/SMJHL-{gameNumber}.html";
-            var scraper = new GameIndexScraper();
-            var goals = scraper.GetGoals("49", "shl", gameNumber);
-            var boxscore = scraper.GetBoxScore("49", "shl", gameNumber);
+            try
+            {
+                var scraper = new GameIndexScraper();
+                var goals = scraper.GetGoals("49", league, gameNumber);
+                var boxscore = scraper.GetBoxScore("49", league, gameNumber);
 
-            var goalsString = string.Empty;
-            goalsString += "**1st Period:**";
-            goalsString += String.Join("\n", goals.Where(x => x.Period == 1).Select(x => x.Info));
-            goalsString += "\n**2nd Period:**";
-            goalsString += String.Join("\n", goals.Where(x => x.Period == 2).Select(x => x.Info));
-            goalsString += "\n**3rd Period:**";
-            goalsString += String.Join("\n", goals.Where(x => x.Period == 3).Select(x => x.Info));
-            if (goals.Any(x => x.Period == 4))
-            {
-                goalsString += "\n**OT Period:**";
-                goalsString += String.Join("\n", goals.Where(x => x.Period == 4).Select(x => x.Info));
+                await ReplyAsync($"{boxscore}\n\n{goals}");
             }
-            if (goals.Any(x => x.Period == 5))
+            catch (Exception e)
             {
-                goalsString += "\n**Shootout:**";
-                goalsString += String.Join("\n", goals.Where(x => x.Period == 5).Select(x => x.Info));
+                Console.WriteLine(e);
             }
-            await ReplyAsync($"{boxscore}\n\n{goalsString}");
+        }
+
+        [Command("schedule")]
+        public async Task ScheduleAsync(string league, string team)
+        {
+            try
+            {
+                var scraper = new GameIndexScraper();
+                var schedule = scraper.GetSchedule("49", league, team);
+
+                await ReplyAsync(schedule);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 
