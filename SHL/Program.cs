@@ -124,7 +124,7 @@ namespace SHL
             await _client.LoginAsync(TokenType.Bot,
                 // < DO NOT HARDCODE YOUR TOKEN >
                 //Environment.GetEnvironmentVariable("DiscordToken"));
-                "NTk0Mjk5MTY3NjU3MDMzNzUy.XVcb_w.6R-FR5x0hcCIE796bMuvTV3qb9M");
+                "NTk0Mjk5MTY3NjU3MDMzNzUy.XVcgPg.jfSV9GSP4vLK8a2Zb8NNnmwNlJ0");
             await _client.StartAsync();
 
             // Wait infinitely so your bot actually stays connected.
