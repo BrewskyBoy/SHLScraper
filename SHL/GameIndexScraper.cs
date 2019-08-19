@@ -69,6 +69,19 @@ namespace SHL
             table.Columns.RemoveAt(9);
             table.Columns.RemoveAt(0);
 
+            var stringBuilder = new StringBuilder();
+            for (var i = 1; i < table.Rows.Count; i++)
+            {
+                var wasOT = !string.IsNullOrEmpty(table.Rows[i].Field<string>(6));
+                var wasSO = !string.IsNullOrEmpty(table.Rows[i].Field<string>(7));
+                var extraString = wasOT ? " (OT)" : wasSO ? " (SO)" : string.Empty;
+                stringBuilder.AppendLine($"**Game #{table.Rows[i].Field<string>(0)} - {table.Rows[i].Field<string>(5)}{extraString}**");
+                stringBuilder.AppendLine($"{table.Rows[i].Field<string>(1)}: {table.Rows[i].Field<string>(2)}");
+                stringBuilder.AppendLine($"{table.Rows[i].Field<string>(3)}: {table.Rows[i].Field<string>(4)}");
+                stringBuilder.AppendLine(string.Empty);
+            }
+
+            /*
             var columnMaxLengths = new Dictionary<int, int>();
             for (var i = 0; i < table.Columns.Count; i++)
             {
@@ -111,7 +124,7 @@ namespace SHL
                 stringBuilder.AppendLine(borderString);
             }
 
-
+    */
             return
                 $"```{stringBuilder}```";
         }
