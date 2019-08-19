@@ -75,7 +75,7 @@ namespace SHL
                 var wasOT = !string.IsNullOrEmpty(table.Rows[i].Field<string>(6));
                 var wasSO = !string.IsNullOrEmpty(table.Rows[i].Field<string>(7));
                 var extraString = wasOT ? " (OT)" : wasSO ? " (SO)" : string.Empty;
-                stringBuilder.AppendLine($"**Game #{table.Rows[i].Field<string>(0)} - {table.Rows[i].Field<string>(5)}{extraString}**");
+                stringBuilder.AppendLine($"Game #{table.Rows[i].Field<string>(0)} - {table.Rows[i].Field<string>(5)}{extraString}");
                 stringBuilder.AppendLine($"{table.Rows[i].Field<string>(1)}: {table.Rows[i].Field<string>(2)}");
                 stringBuilder.AppendLine($"{table.Rows[i].Field<string>(3)}: {table.Rows[i].Field<string>(4)}");
                 stringBuilder.AppendLine(string.Empty);
